@@ -1,0 +1,15 @@
+nav {
+    height: 100px;
+    margin-bottom: 50px;
+}
+
+.searchBar 
+{
+    display: flex;
+
+}
+
+form .input {
+    height: 35px;
+    border-radius: 5px;
+}
