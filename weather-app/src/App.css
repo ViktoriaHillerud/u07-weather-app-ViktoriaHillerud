@@ -32,6 +32,7 @@
   margin-left: 5px;
   margin-right: 5px;
   padding: 10px;
+  margin-top: 10px;
 }
 
 .modalStyle {
@@ -45,18 +46,34 @@
 }
 
 .card{
-  background-color:  rgba(11, 66, 80, 0.3);
-  transition: 0.3s;
-  box-shadow: 3px 3px rgb(144, 162, 162);
-}
+  background-image:  linear-gradient(to right, #314755 0%, #26a0da  51%, #314755  100%);
+  transition: 0.5s;
+    background-size: 200% auto;
+    color: white;       
+    opacity: 0.6;     
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+  }
 
-.card:hover {
+  .card:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    cursor: pointer;
+  transform: scale(1.1);
+    text-decoration: none;
+    opacity: 0.9;
+  }
+  /* transition: 0.3s;
+  box-shadow: 3px 3px rgb(144, 162, 162); */
+
+
+/* .card:hover {
   background-color:  rgba(11, 66, 80, 0.5);
   opacity: 1;
   cursor: pointer;
   transform: scale(1.1);
  
-}
+} */
 
 th, td {
   color: white;
@@ -65,6 +82,7 @@ th, td {
 tr {
   height: 70px;
 }
+
 
 .xmark {
   margin-left: 85vw;

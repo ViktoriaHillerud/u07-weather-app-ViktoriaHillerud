@@ -43,7 +43,7 @@ function App() {
   const toArray = [];
 
   try {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=44&lon=34&appid=38de3cc8678599c25ca4c9800d971a8b`;
     const response = await fetch(url);
     const result = await response.json();
     console.log(result)
