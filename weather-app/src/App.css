@@ -1,15 +1,82 @@
+.App {
+  background: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.App:before {
+    content: '';
+    background-image: url('https://cdn.pixabay.com/photo/2020/05/06/06/18/blue-5136251_1280.jpg');
+    background-size: cover ;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -13;
+}
+
+.cont {
+  background-color: rgb(153, 187, 209, 0.5);
+  color: white;
+  z-index: 5;
+}
+
 #grid {
   border-radius: 5px;
   margin-left: 5px;
   margin-right: 5px;
-
   padding: 10px;
 }
 
+.modalStyle {
+  text-align: center;
+  height: 750px;
+  color: white;
+  background-color:  rgba(1, 104, 129, 0.4);
+  padding: 10px;
+  margin: 40px;
+  border-radius: 10px;
+}
+
+.card{
+  background-color:  rgba(11, 66, 80, 0.3);
+  transition: 0.3s;
+  box-shadow: 3px 3px rgb(144, 162, 162);
+}
+
+.card:hover {
+  background-color:  rgba(11, 66, 80, 0.5);
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(1.1);
+ 
+}
+
+
+.xmark {
+  margin-left: 80vw;
+  height: 50px;
+}
 
 
 @media only screen and (max-width: 500px) {
   .d-flex {
     flex-wrap: wrap;
+  }
+
+  .modalStyle {
+    margin: 10px;
+
+  }
+  .xmark {
+    margin-left: 35vw;
+  }
+
+  .card-body {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
   }
 }

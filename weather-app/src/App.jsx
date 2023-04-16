@@ -1,21 +1,81 @@
 import { useEffect } from "react";
-import Nav from "./components/nav/Nav";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+// import Nav from "./components/nav/Nav";
 
 
-function Today() {
+function App() {
+
+  //Setting coords with geoLocation
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
+  const [status, setStatus] = useState(null);
+
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setStatus('Geolocation not available on your browser, try search instead!')
+    }else {
+      setStatus('Locating...');
+      navigator.geolocation.getCurrentPosition((position) => {
+        setStatus(null);
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+        console.log(position);
+      }, () => {
+        setStatus('Unable to retrieve your location');
+      });
+    }
+  }
+
+  useEffect(() => {
+    getLocation()
+  }, [])
+
+
+  //Menu for showing one day forecast hour-by-hour
+  const [menu, setMenu] = useState(false);
+  const handleMenuShow = () => {
+  setMenu(!menu);
+  }
+
+  const getWeather = async () => {
+  const toArray = [];
+
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+    const response = await fetch(url);
+    const result = await response.json();
+    alert(result)
+
+
+  }catch(error) {
+     console.log(error);
+     }
+  }
+
   
+   useEffect(() => {
+     getWeather()
+   }, [])
+
+
   return (
     <>
-    <div  className="container text-center">
+    {/* <Nav handleSubmit={handleSubmit} handleChange={handleChange}/> */}
+    <div className="App">
+     <div  className="container text-center">
   <div className="row justify-content-md-center">
-    <div id="grid" className="col col-md-6 shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div id="grid" className="cont col col-md-6 shadow p-3 mb-5 bg-body-tertiary rounded">
+    
       Weather in your city today
+      - Farenheit or Celsius
       -temp
       -wind 
       -humidity
     </div>
     
-    <div id="grid" className="col col-lg-4 shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div id="grid" className="cont  col col-lg-4 shadow p-3 mb-5 bg-body-tertiary rounded">
       Sun up and down
       - up kl:
       - down kl:
@@ -23,85 +83,74 @@ function Today() {
   </div>
 </div>
 
-
+{menu && (
+  <div>
+    <div onClick={handleMenuShow}></div>
+    <div className="modalStyle" id="overlay ">
+    Show hour by hour!
+    <div className="xmark"> <FontAwesomeIcon icon={faXmark} style={{cursor: "pointer"}} size="3x" onClick={handleMenuShow}/></div>
+    </div>
+    </div>
+  )} 
 <div  className="container text-center">
-  <div className="row justify-content-md-center">
-    <div id="grid" className="col col-sm-12 shadow p-3 mb-5 bg-body-tertiary rounded">
+  <div className=" row justify-content-md-center">
+    <div id="grid" className="cont  col col-sm-10 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
       5-day-prognosis
       <div className="d-flex justify-content-center p-2">
         <div className="p-2">
-           <div className="card">   
+           <div className="card " onClick={handleMenuShow}>   
             <div className="card-body">
-               This is some text within a card body.
+               <p>temp</p><br></br>
+               <p>wind</p><br></br>
+               <p>humidity</p><br></br>
             </div>
           </div>
         </div>
 
         <div className="p-2">
-           <div className="card">
-            <div className="card-body">
-               This is some text within a card body.
+           <div className="card" onClick={handleMenuShow}>
+            <div className="card-body" >
+            <p>temp</p><br></br>
+               <p>wind</p><br></br>
+               <p>humidity</p><br></br>
             </div>
           </div>
         </div>
         <div className="p-2">
-           <div className="card">
+           <div className="card" onClick={handleMenuShow}>
             <div className="card-body">
-               This is some text within a card body.
+            <p>temp</p><br></br>
+               <p>wind</p><br></br>
+               <p>humidity</p><br></br>
             </div>
           </div>
         </div>
         <div className="p-2">
-           <div className="card">
+           <div className="card" onClick={handleMenuShow}>
             <div className="card-body">
-               This is some text within a card body.
+            <p>temp</p><br></br>
+               <p>wind</p><br></br>
+               <p>humidity</p><br></br>
             </div>
           </div>
         </div>
         <div className="p-2">
-           <div className="card">
+           <div className="card" onClick={handleMenuShow}>
             <div className="card-body">
-               This is some text within a card body.
+            <p>temp</p><br></br>
+               <p>wind</p><br></br>
+               <p>humidity</p><br></br>
             </div>
           </div>
         </div>
       </div>
-    </div>  
+    </div> 
   </div>
 </div>
-    </>
-  )
+</div>
 
-    
-}
+ 
 
-
-
-function App() {
-
-  const getWeather = async () => {
-    const toArray = [];
-
-    try {
-      const url = 'https://pokeapi.co/api/v2/pokemon/pikachu';
-      const response = await fetch(url);
-      const result = await response.json();
-      console.log(result)
-
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    getWeather()
-  }, [])
-
-  return (
-    <>
-     <Nav/>
-
-     <Today></Today>
     </>
    
   )
