@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
+
+
 .App {
   background: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
   position: relative;
+  font-family: 'Comfortaa';
 }
 
 .App:before {
@@ -54,9 +58,16 @@
  
 }
 
+th, td {
+  color: white;
+}
+
+tr {
+  height: 70px;
+}
 
 .xmark {
-  margin-left: 80vw;
+  margin-left: 85vw;
   height: 50px;
 }
 
@@ -71,7 +82,7 @@
 
   }
   .xmark {
-    margin-left: 35vw;
+    margin-left: 70vw;
   }
 
   .card-body {

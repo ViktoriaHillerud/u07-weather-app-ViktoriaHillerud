@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-// import Nav from "./components/nav/Nav";
+ import Nav from "./components/nav/Nav";
 
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
     const response = await fetch(url);
     const result = await response.json();
-    alert(result)
+    console.log(result)
 
 
   }catch(error) {
@@ -61,8 +61,9 @@ function App() {
 
 
   return (
+    //handleSubmit={handleSubmit} handleChange={handleChange} on Nav-component?
     <>
-    {/* <Nav handleSubmit={handleSubmit} handleChange={handleChange}/> */}
+     <Nav /> 
     <div className="App">
      <div  className="container text-center">
   <div className="row justify-content-md-center">
@@ -87,8 +88,36 @@ function App() {
   <div>
     <div onClick={handleMenuShow}></div>
     <div className="modalStyle" id="overlay ">
-    Show hour by hour!
     <div className="xmark"> <FontAwesomeIcon icon={faXmark} style={{cursor: "pointer"}} size="3x" onClick={handleMenuShow}/></div>
+    <table className="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col"> </th>
+      <th scope="col">Temp</th>
+      <th scope="col">wind</th>
+      <th scope="col">humidity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">kl.</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">kl.</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">kl. </th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
     </div>
     </div>
   )} 

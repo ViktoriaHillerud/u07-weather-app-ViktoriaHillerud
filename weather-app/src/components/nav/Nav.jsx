@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
+//{handleSubmit, handleChange}
 
-function Nav({handleSubmit, handleChange}) {
+function Nav() {
 
     const [city, setCity] = useState("")
     const [cityWeather, setCityWeather] = useState([])
