@@ -21,9 +21,7 @@ function App() {
   };
 
   useEffect(() => {
-    
     const getLocation = async () => {
-
       const urlWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
       const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
 
@@ -40,11 +38,19 @@ function App() {
         console.log(position);
       });
 
-      await fetch(urlWeather)
-        .then((res) => res.json())
+      const responses = await Promise.all([
+        fetch(urlWeather),
+        fetch(urlForecast),
+      ]);
+
+      var data1 = await responses[0].json();
+      var data2 = await responses[1].json()
         .then((result) => {
           console.log(result);
-          setWeather(result);
+          setWeather(data1);
+          console.log(data1);
+          setForecast(data2.list);
+          console.log(data2);
         });
     };
     getLocation();
@@ -57,11 +63,12 @@ function App() {
 
       <div className="App">
         <div className="container text-center">
-          <div className="row justify-content-md-center">
+          <div className="dailyholder row justify-content-md-center">
             <div
               id="grid"
               className="cont col col-md-6 shadow p-3 mb-5 bg-body-tertiary rounded"
             >
+
               {status}
 
               {typeof weather.main != "undefined" ? (
@@ -93,6 +100,7 @@ function App() {
                       <FontAwesomeIcon icon={faSun} size="3x" />
                     </div>
                     <div>
+                      <h4>Sunrise</h4>
                       {new Date(weather.sys.sunrise * 1000).toLocaleTimeString(
                         "en-IN"
                       )}
@@ -104,6 +112,7 @@ function App() {
                       <FontAwesomeIcon icon={faMoon} size="3x" />
                     </div>
                     <div>
+                    <h4>Sunset</h4>
                       {new Date(weather.sys.sunset * 1000).toLocaleTimeString(
                         "en-IN"
                       )}
@@ -116,6 +125,10 @@ function App() {
             </div>
           </div>
         </div>
+
+        
+
+              {/* Forecast 5 days */}
 
         {menu && (
           <div>
@@ -130,6 +143,13 @@ function App() {
                   onClick={handleMenuShow}
                 />
               </div>
+              {typeof forecast.list != "undefined" ? (
+                <div>
+                  <h2>{forecast.main.feels_like}</h2>
+                </div>
+              ) : (
+                ""
+              )}
               <table className="table table-hover">
                 <thead>
                   <tr>

@@ -126,4 +126,13 @@ tr {
     gap: 10px;
     flex-direction: row;
   }
+
+
+
+  .dailyholder {
+    margin-right: 2px;
+    display: flex;
+    flex-direction: column;
+    
+  }
 }
