@@ -7,13 +7,15 @@ import { useState } from "react";
 import Nav from "./components/nav/Nav";
 
 function App() {
+
   //Setting coords with geoLocation
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
   const [weather, setWeather] = useState({});
   const [forecast, setForecast] = useState(undefined);
-  const [unit, setUnit] = useState("")
+  const [celcius, setCelcius] = useState(true);
+
 
   //Menu for showing one day forecast hour-by-hour
   const [menu, setMenu] = useState(false);
@@ -52,7 +54,7 @@ function App() {
         .then((result) => {
           console.log(result);
           setWeather(result[0]);
-          console.log(result);
+          console.log(result[0]);
           setForecast(result[1].list);
           console.log(result[1].list);
         });
@@ -60,14 +62,9 @@ function App() {
     getLocation();
   }, [lat, lng]);
 
-
-// const changeDegree = () => {
-//   if() {
-
-//   } else {
-
-//   }
-// }
+const changeUnit = () => {
+ setCelcius(!celcius)
+}
 
   return (
     //handleSubmit={handleSubmit} handleChange={handleChange} on Nav-component?
@@ -81,14 +78,17 @@ function App() {
               id="grid"
               className="cont col col-md-6 shadow p-3 mb-5 bg-body-tertiary rounded"
             >
-
               {status}
-
               {typeof weather.main != "undefined" ? (
                 <div>
                   <h2>{weather.name}</h2>
-                  <button className="setDegree">Change degree</button>
-                  <p>{weather.main.temp} &#176;F</p>
+                  <button onClick={changeUnit} className="setDegree">Change degree</button>
+                  {!celcius && (
+                  <p>{Math.round(weather.main.temp)} &#176;F</p>
+                  )}
+                  {celcius && (
+                  <p>{Math.round((weather.main.temp) / 9/5) } &#176;C</p>
+                  )}
                   wind
                   <p>
                     speed{weather.wind.speed} deg{weather.wind.deg}
@@ -207,7 +207,13 @@ function App() {
                       <div className="card " onClick={handleMenuShow}>
                       <div className="card-body">
                       <p>{data.dt_txt}</p>
-                        <p>{data.main.temp}{unit}</p>
+                      {!celcius && (
+                        <p>{Math.round(data.main.temp)}&deg;F</p>
+                      )}
+                      {celcius && (
+                         <p>{Math.round((data.main.temp - 32) / 9/5) }&deg;C</p>
+                      )}
+                       
                       </div>
                   </div>
                 </div>
