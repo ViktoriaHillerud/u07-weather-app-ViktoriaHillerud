@@ -214,6 +214,7 @@ const changeUnit = () => {
                          <p>{Math.round((data.main.temp - 32) / 9/5) }&deg;C</p>
                       )}
                        
+                       
                       </div>
                   </div>
                 </div>
