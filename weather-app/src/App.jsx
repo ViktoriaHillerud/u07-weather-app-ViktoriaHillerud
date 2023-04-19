@@ -12,7 +12,8 @@ function App() {
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
   const [weather, setWeather] = useState({});
-  const [forecast, setForecast] = useState({});
+  const [forecast, setForecast] = useState(undefined);
+  const [unit, setUnit] = useState("")
 
   //Menu for showing one day forecast hour-by-hour
   const [menu, setMenu] = useState(false);
@@ -27,7 +28,7 @@ function App() {
 
       if (!navigator.geolocation) {
         setStatus(
-          "We couldnt find your position! Try search for your city instead!"
+          "We couldnt find your position!"
         );
       } else {
         setStatus("");
@@ -36,25 +37,37 @@ function App() {
         setLat(position.coords.latitude);
         setLng(position.coords.longitude);
         console.log(position);
+      }, () => {
+        setStatus('Unable to retrieve position. Try search for your city instead!')
       });
 
       const responses = await Promise.all([
         fetch(urlWeather),
         fetch(urlForecast),
-      ]);
+      ])
 
-      var data1 = await responses[0].json();
-      var data2 = await responses[1].json()
+      // var data1 = await responses[0].json();
+      // var data2 = await responses[1].json()
+      .then(res => Promise.all(res.map(r => r.json())))
         .then((result) => {
           console.log(result);
-          setWeather(data1);
-          console.log(data1);
-          setForecast(data2.list);
-          console.log(data2);
+          setWeather(result[0]);
+          console.log(result);
+          setForecast(result[1].list);
+          console.log(result[1].list);
         });
     };
     getLocation();
   }, [lat, lng]);
+
+
+// const changeDegree = () => {
+//   if() {
+
+//   } else {
+
+//   }
+// }
 
   return (
     //handleSubmit={handleSubmit} handleChange={handleChange} on Nav-component?
@@ -143,13 +156,7 @@ function App() {
                   onClick={handleMenuShow}
                 />
               </div>
-              {typeof forecast.list != "undefined" ? (
-                <div>
-                  <h2>{forecast.main.feels_like}</h2>
-                </div>
-              ) : (
-                ""
-              )}
+             
               <table className="table table-hover">
                 <thead>
                   <tr>
@@ -183,6 +190,7 @@ function App() {
           </div>
         )}
 
+
         <div className="container text-center">
           <div className=" row justify-content-md-center">
             <div
@@ -190,73 +198,28 @@ function App() {
               className="cont  col col-sm-10 shadow-lg p-3 mb-5 bg-body-tertiary rounded"
             >
               5-day-prognosis
-              <div className="d-flex justify-content-center p-2">
-                <div className="p-2">
-                  <div className="card " onClick={handleMenuShow}>
-                    <div className="card-body">
-                      <p>temp</p>
-                      <br></br>
-                      <p>wind</p>
-                      <br></br>
-                      <p>humidity</p>
-                      <br></br>
-                    </div>
+              
+              {forecast && (
+               <div className="d-flex justify-content-center p-2">
+              {forecast.map((data) => {
+                    return (
+                      <div className="p-2">
+                      <div className="card " onClick={handleMenuShow}>
+                      <div className="card-body">
+                      <p>{data.dt_txt}</p>
+                        <p>{data.main.temp}{unit}</p>
+                      </div>
                   </div>
                 </div>
-
-                <div className="p-2">
-                  <div className="card" onClick={handleMenuShow}>
-                    <div className="card-body">
-                      <p>temp</p>
-                      <br></br>
-                      <p>wind</p>
-                      <br></br>
-                      <p>humidity</p>
-                      <br></br>
+                    )
+                  })} </div>
+                  
+                  ) }
                     </div>
-                  </div>
-                </div>
-                <div className="p-2">
-                  <div className="card" onClick={handleMenuShow}>
-                    <div className="card-body">
-                      <p>temp</p>
-                      <br></br>
-                      <p>wind</p>
-                      <br></br>
-                      <p>humidity</p>
-                      <br></br>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-2">
-                  <div className="card" onClick={handleMenuShow}>
-                    <div className="card-body">
-                      <p>temp</p>
-                      <br></br>
-                      <p>wind</p>
-                      <br></br>
-                      <p>humidity</p>
-                      <br></br>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-2">
-                  <div className="card" onClick={handleMenuShow}>
-                    <div className="card-body">
-                      <p>temp</p>
-                      <br></br>
-                      <p>wind</p>
-                      <br></br>
-                      <p>humidity</p>
-                      <br></br>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          
     </>
   );
 }
