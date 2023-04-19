@@ -84,10 +84,10 @@ const changeUnit = () => {
                   <h2>{weather.name}</h2>
                   <button onClick={changeUnit} className="setDegree">Change degree</button>
                   {!celcius && (
-                  <p>{Math.round(weather.main.temp)} &#176;F</p>
+                  <p>{Math.round(weather.main.temp)} &#176;K</p>
                   )}
                   {celcius && (
-                  <p>{Math.round((weather.main.temp) / 9/5) } &#176;C</p>
+                  <p>{Math.round((weather.main.temp) - 273.15) } &#176;C</p>
                   )}
                   wind
                   <p>
@@ -208,13 +208,13 @@ const changeUnit = () => {
                       <div className="card-body">
                       <p>{data.dt_txt}</p>
                       {!celcius && (
-                        <p>{Math.round(data.main.temp)}&deg;F</p>
+                        <p>{Math.round(data.main.temp)}&deg;K</p>
                       )}
                       {celcius && (
-                         <p>{Math.round((data.main.temp - 32) / 9/5) }&deg;C</p>
+                         <p>{Math.round((data.main.temp) - 273.15) }&deg;C</p>
                       )}
-                      
-
+                       
+                       
                       </div>
                   </div>
                 </div>
