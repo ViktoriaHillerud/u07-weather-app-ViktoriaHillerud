@@ -55,7 +55,7 @@ text-decoration: none;
 
 .modalStyle {
   text-align: center;
-  height: 750px;
+  height: auto;
   color: white;
   background-color:  rgba(1, 104, 129, 0.4);
   padding: 10px;
