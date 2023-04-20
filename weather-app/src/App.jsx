@@ -15,7 +15,7 @@ function App() {
   const [weather, setWeather] = useState({});
   const [forecast, setForecast] = useState(undefined);
   const [celcius, setCelcius] = useState(true);
-
+ 
 
   //Menu for showing one day forecast hour-by-hour
   const [menu, setMenu] = useState(false);
@@ -48,8 +48,7 @@ function App() {
         fetch(urlForecast),
       ])
 
-      // var data1 = await responses[0].json();
-      // var data2 = await responses[1].json()
+
       .then(res => Promise.all(res.map(r => r.json())))
         .then((result) => {
           console.log(result);
@@ -66,11 +65,12 @@ const changeUnit = () => {
  setCelcius(!celcius)
 }
 
+
   return (
     //handleSubmit={handleSubmit} handleChange={handleChange} on Nav-component?
     <>
       <Nav />
-
+    
       <div className="App">
         <div className="container text-center">
           <div className="dailyholder row justify-content-md-center">
@@ -201,7 +201,8 @@ const changeUnit = () => {
               
               {forecast && (
                <div className="d-flex justify-content-center p-2">
-              {forecast.map((data) => {
+              {forecast.filter(fc => fc.dt_txt.slice(11,19) === "09:00:00").map((data) => {
+          
                     return (
                       <div className="p-2">
                       <div className="card " onClick={handleMenuShow}>

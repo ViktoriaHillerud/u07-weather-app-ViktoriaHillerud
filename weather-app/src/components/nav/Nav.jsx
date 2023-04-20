@@ -1,33 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
 //{handleSubmit, handleChange}
 
 function Nav() {
 
     const [city, setCity] = useState("")
-    const [cityWeather, setCityWeather] = useState([])
-
-    //Nedanstående kod används för närarande i App.jsx...
-    
-    // const getWeather = async () => {
-    //     const toArray = [];
-    
-    //     try {
-    //       const url = 'https://pokeapi.co/api/v2/pokemon/pikachu';
-    //       const response = await fetch(url);
-    //       const result = await response.json();
-    //       console.log(result)
-    
-    //     } catch(error) {
-    //       console.log(error);
-    //     }
-    //   }
-    
-    //   useEffect(() => {
-    //     getWeather()
-    //   }, [])
-
 
     const handleChange = (e) => {
         setCity(e.target.value.toLowerCase());
