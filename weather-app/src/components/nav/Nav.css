@@ -1,6 +1,7 @@
 
 nav {
     height: 100px;
+   
     
 }
 
@@ -61,7 +62,7 @@ nav {
     display: flex;
     align-items: center;
     justify-items: center;
-    margin-bottom: 70px;
+    margin-bottom: 90px;
 }
 
      

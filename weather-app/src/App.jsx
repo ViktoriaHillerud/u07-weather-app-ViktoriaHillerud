@@ -1,12 +1,39 @@
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faSun, faMoon, faWind } from "@fortawesome/free-solid-svg-icons";
+import {
+  faXmark,
+  faSun,
+  faMoon,
+  faWind,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 
 import Nav from "./components/nav/Nav";
 
+
+
 function App() {
+
+  // const getWeather = async (city)  => {
+  //   const searchUrl1 = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+  //   const searchUrl2 = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+  //   const responses = await Promise.all([
+  //     fetch(searchUrl1),
+  //     fetch(searchUrl2),
+      
+  //   ])
+  
+  //     .then((res) => Promise.all(res.map((r) => r.json())))
+  //     .then((result) => {
+  //       console.log(result);
+  //       setWeather(result[0]);
+  //       console.log(result[0]);
+  //       setForecast(result[1].list);
+  //       console.log(result[1].list);
+  //     });
+  // }
+
   //Setting coords with geoLocation
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
@@ -21,7 +48,10 @@ function App() {
     setMenu(!menu);
   };
 
+  
+
   useEffect(() => {
+
     const getLocation = async () => {
       const urlWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
       const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
@@ -61,6 +91,8 @@ function App() {
     getLocation();
   }, [lat, lng]);
 
+
+ 
   const changeUnit = () => {
     setCelcius(!celcius);
   };
@@ -84,20 +116,20 @@ function App() {
                   <button onClick={changeUnit} className="setDegree">
                     Change degree
                   </button>
-                  {!celcius && <p>{Math.round(weather.main.temp)} &#176;K</p>}
+                  {!celcius && <p className="degrees">{Math.round(weather.main.temp)} &#176;K</p>}<br></br>
                   {celcius && (
-                    <p>{Math.round(weather.main.temp - 273.15)} &#176;C</p>
+                    <p className="degrees"><img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}/>{Math.round(weather.main.temp - 273.15)} &#176;C</p>
                   )}
-                 
-                  <p>
-                  <div>
-                      <FontAwesomeIcon icon={faWind} size="2xl"/>
-                    </div>
-                    speed {weather.wind.speed} deg {weather.wind.deg}
-                  </p>
-                  humidity
-                  <p>{weather.wind.speed}%</p>
                   <div>{weather.weather[0].description}</div>
+                  <p>
+                    <div>
+                      <FontAwesomeIcon icon={faWind} size="2xl" />
+                    </div>
+                    {weather.wind.speed} m/s
+                  </p>
+                  Humidity
+                  <p>{weather.wind.speed}%</p>
+                  
                 </div>
               ) : (
                 ""
@@ -146,10 +178,10 @@ function App() {
         {menu && (
           <div>
             <div onClick={handleMenuShow}></div>
-              <div className="modalStyle" id="overlay ">
-                <div className="xmark">
+            <div className="modalStyle" id="overlay ">
+              <div className="xmark">
                 {" "}
-                 <FontAwesomeIcon
+                <FontAwesomeIcon
                   icon={faXmark}
                   style={{ cursor: "pointer" }}
                   size="3x"
@@ -158,27 +190,39 @@ function App() {
               </div>
               {forecast && (
                 <div className="d-flex justify-content-center p-2">
-                  {forecast.filter(fc => fc.dt_txt)
+                  {forecast
+                    .filter((fc) => fc.dt_txt.slice(0, 11))
                     .map((data) => {
                       return (
                         <div className="p-2">
                           <table>
+                            <thead>
                             <tr>
                               <th>{data.dt_txt}</th>
                             </tr>
+                            </thead>
+                            <tbody>
                             <tr>
-                              <td>   {!celcius && <p>{Math.round(weather.main.temp)} &#176;K</p>}
-                  {celcius && (
-                    <p>{Math.round(weather.main.temp - 273.15)} &#176;C</p>
-                  )}</td>
+                              <td>
+                                {" "}
+                                {!celcius && (
+                                  <p className="degrees">{Math.round(weather.main.temp)} &#176;K</p>
+                                )}
+                                {celcius && (
+                                  <p className="degrees">
+                                    {Math.round(weather.main.temp - 273.15)}
+                                    &#176;C
+                                  </p>
+                                )}
+                              </td>
                             </tr>
+                            </tbody>
                           </table>
                         </div>
                       );
                     })}
                 </div>
               )}
-         
             </div>
           </div>
         )}
@@ -199,15 +243,16 @@ function App() {
                         <div className="p-2">
                           <div className="card " onClick={handleMenuShow}>
                             <div className="card-body">
-                              <p>{data.dt_txt}</p>
+                              <p>{data.dt_txt.slice(0,10)}</p>
                               {!celcius && (
-                                <p>{Math.round(data.main.temp)}&deg;K</p>
+                                <p className="degrees">{Math.round(data.main.temp)}&deg;K</p>
                               )}
                               {celcius && (
-                                <p>
+                                <p className="degrees">
                                   {Math.round(data.main.temp - 273.15)}&deg;C
                                 </p>
                               )}
+                              <p>Humidity {data.main.humidity}%</p>
                             </div>
                           </div>
                         </div>
