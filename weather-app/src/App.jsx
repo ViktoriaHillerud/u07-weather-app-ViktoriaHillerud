@@ -116,11 +116,11 @@ function App() {
                   <button onClick={changeUnit} className="setDegree">
                     Change degree
                   </button>
-                  {!celcius && <p className="degrees">{Math.round(weather.main.temp)} &#176;K</p>}<br></br>
+                  {!celcius && <p className="degrees"><img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}/>{Math.round(weather.main.temp)} &#176;K</p>}<br></br>
                   {celcius && (
                     <p className="degrees"><img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}/>{Math.round(weather.main.temp - 273.15)} &#176;C</p>
                   )}
-                  <div>{weather.weather[0].description}</div>
+                  <p>{weather.weather[0].description}</p>
                   <p>
                     <div>
                       <FontAwesomeIcon icon={faWind} size="2xl" />
