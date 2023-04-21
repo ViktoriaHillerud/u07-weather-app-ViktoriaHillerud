@@ -91,6 +91,11 @@ text-decoration: none;
     opacity: 0.9;
   }
 
+  .tableHolder {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
 
 th, td {
   color: white;

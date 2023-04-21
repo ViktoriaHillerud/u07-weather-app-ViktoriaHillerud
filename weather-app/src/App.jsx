@@ -189,21 +189,21 @@ function App() {
                 />
               </div>
               {forecast && (
-                <div className="d-flex justify-content-center p-2">
+                <div className="tableHolder d-flex justify-content-center p-2">
                   {forecast
                     .filter((fc) => fc.dt_txt.slice(0, 11))
                     .map((data) => {
                       return (
-                        <div className="p-2">
-                          <table>
+                        <div className=" p-2">
+                          <table className="table">
                             <thead>
-                            <tr>
-                              <th>{data.dt_txt}</th>
+                            <tr scope="row">
+                              <th scope="col">{data.dt_txt}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>
+                            <tr scope="row">
+                              <td >
                                 {" "}
                                 {!celcius && (
                                   <p className="degrees">{Math.round(weather.main.temp)} &#176;K</p>
