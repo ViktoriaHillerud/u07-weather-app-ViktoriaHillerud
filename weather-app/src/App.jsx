@@ -11,22 +11,19 @@ import { useState } from "react";
 
 import Nav from "./components/nav/Nav";
 
-
-
 function App() {
-
-
   //Setting coords with geoLocation
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
   const [weather, setWeather] = useState({});
   const [forecast, setForecast] = useState(undefined);
+  const [searchForecast, setSearchForecast] = useState(undefined);
   const [celcius, setCelcius] = useState(true);
 
   //url to get searched weather
   const searchUrlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${weather}&appid=38de3cc8678599c25ca4c9800d971a8b`;
-  const searchUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${forecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+  const searchUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${searchForecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
 
   const handleChange = (e) => {
     setWeather(e.target.value.toLowerCase());
@@ -37,21 +34,21 @@ function App() {
     getWeather();
   };
 
- const getWeather = async () => {
-  const responses = await Promise.all([
-    fetch(searchUrlWeather),
-    fetch(searchUrlForecast),
-  ])
+  const getWeather = async () => {
+    const responses = await Promise.all([
+      fetch(searchUrlWeather),
+      fetch(searchUrlForecast),
+    ])
 
-    .then((res) => Promise.all(res.map((r) => r.json())))
-    .then((result) => {
-      console.log(result);
-      setWeather(result[0]);
-      console.log(result[0]);
-      setForecast(result[1].list);
-      console.log(result[1]);
-    });
- }
+      .then((res) => Promise.all(res.map((r) => r.json())))
+      .then((result) => {
+        console.log(result);
+        setWeather(result[0]);
+        console.log(result[0]);
+        setSearchForecast(result[1].list);
+        console.log(result[1].list);
+      });
+  };
 
   //Menu for showing one day forecast hour-by-hour
   const [menu, setMenu] = useState(false);
@@ -59,10 +56,7 @@ function App() {
     setMenu(!menu);
   };
 
-  
-
   useEffect(() => {
-
     const getLocation = async () => {
       const urlWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
       const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
@@ -102,8 +96,6 @@ function App() {
     getLocation();
   }, [lat, lng]);
 
-
- 
   const changeUnit = () => {
     setCelcius(!celcius);
   };
@@ -114,7 +106,7 @@ function App() {
       <Nav />
 
       <div className="App">
-      <div className="searchBar">
+        <div className="searchBar">
           <form onSubmit={handleSubmit} className="form-inline">
             <input
               className="input"
@@ -141,9 +133,23 @@ function App() {
                   <button onClick={changeUnit} className="setDegree">
                     Change degree
                   </button>
-                  {!celcius && <p className="degrees"><img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}/>{Math.round(weather.main.temp)} &#176;K</p>}<br></br>
+                  {!celcius && (
+                    <p className="degrees">
+                      <img
+                        src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
+                      />
+                      {Math.round((weather.main.temp - 273.15) * 1.8 + 32)}{" "}
+                      &#176;F
+                    </p>
+                  )}
+                  <br></br>
                   {celcius && (
-                    <p className="degrees"><img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}/>{Math.round(weather.main.temp - 273.15)} &#176;C</p>
+                    <p className="degrees">
+                      <img
+                        src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
+                      />
+                      {Math.round(weather.main.temp - 273.15)} &#176;C
+                    </p>
                   )}
                   <p>{weather.weather[0].description}</p>
                   <p>
@@ -154,7 +160,6 @@ function App() {
                   </p>
                   Humidity
                   <p>{weather.wind.speed}%</p>
-                  
                 </div>
               ) : (
                 ""
@@ -222,25 +227,30 @@ function App() {
                         <div className=" p-2">
                           <table className="table">
                             <thead>
-                            <tr scope="row">
-                              <th scope="col">{data.dt_txt}</th>
-                            </tr>
+                              <tr scope="row">
+                                <th scope="col">{data.dt_txt}</th>
+                              </tr>
                             </thead>
                             <tbody>
-                            <tr scope="row">
-                              <td >
-                                {" "}
-                                {!celcius && (
-                                  <p className="degrees">{Math.round(weather.main.temp)} &#176;K</p>
-                                )}
-                                {celcius && (
-                                  <p className="degrees">
-                                    {Math.round(weather.main.temp - 273.15)}
-                                    &#176;C
-                                  </p>
-                                )}
-                              </td>
-                            </tr>
+                              <tr scope="row">
+                                <td>
+                                  {" "}
+                                  {!celcius && (
+                                    <p className="degrees">
+                                      {Math.round(
+                                        (weather.main.temp - 273.15) * 1.8 + 32
+                                      )}{" "}
+                                      &#176;F
+                                    </p>
+                                  )}
+                                  {celcius && (
+                                    <p className="degrees">
+                                      {Math.round(weather.main.temp - 273.15)}
+                                      &#176;C
+                                    </p>
+                                  )}
+                                </td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>
@@ -258,7 +268,7 @@ function App() {
               id="grid"
               className="cont  col col-sm-10 shadow-lg p-3 mb-5 bg-body-tertiary rounded"
             >
-             <h2>5-day forecast</h2>
+              <h2>5-day forecast</h2>
               {forecast && (
                 <div className="d-flex justify-content-center p-2">
                   {forecast
@@ -268,9 +278,14 @@ function App() {
                         <div className="p-2">
                           <div className="card " onClick={handleMenuShow}>
                             <div className="card-body">
-                              <p>{data.dt_txt.slice(0,10)}</p>
+                              <p>{data.dt_txt.slice(0, 10)}</p>
                               {!celcius && (
-                                <p className="degrees">{Math.round(data.main.temp)}&deg;K</p>
+                                <p className="degrees">
+                                  {Math.round(
+                                    (data.main.temp - 273.15) * 1.8 + 32
+                                  )}
+                                  &deg;F
+                                </p>
                               )}
                               {celcius && (
                                 <p className="degrees">
@@ -283,6 +298,13 @@ function App() {
                         </div>
                       );
                     })}{" "}
+                </div>
+              )}
+
+              {/* SearchForecast */}
+              {searchForecast && (
+                <div className="d-flex justify-content-center p-2">
+                 
                 </div>
               )}
             </div>
