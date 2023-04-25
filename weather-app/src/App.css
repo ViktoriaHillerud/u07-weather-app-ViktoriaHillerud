@@ -37,6 +37,10 @@ box-shadow: 0 0 20px #eee;
 border-radius: 10px;
 }
 
+.forecastTitle {
+  font-size: x-large
+}
+
 img {
   height: 100px;
   margin-left: 0px;

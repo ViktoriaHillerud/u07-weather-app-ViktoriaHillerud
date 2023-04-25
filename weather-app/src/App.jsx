@@ -15,24 +15,6 @@ import Nav from "./components/nav/Nav";
 
 function App() {
 
-  // const getWeather = async (city)  => {
-  //   const searchUrl1 = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=38de3cc8678599c25ca4c9800d971a8b`;
-  //   const searchUrl2 = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=38de3cc8678599c25ca4c9800d971a8b`;
-  //   const responses = await Promise.all([
-  //     fetch(searchUrl1),
-  //     fetch(searchUrl2),
-      
-  //   ])
-  
-  //     .then((res) => Promise.all(res.map((r) => r.json())))
-  //     .then((result) => {
-  //       console.log(result);
-  //       setWeather(result[0]);
-  //       console.log(result[0]);
-  //       setForecast(result[1].list);
-  //       console.log(result[1].list);
-  //     });
-  // }
 
   //Setting coords with geoLocation
   const [lat, setLat] = useState(null);
@@ -41,6 +23,35 @@ function App() {
   const [weather, setWeather] = useState({});
   const [forecast, setForecast] = useState(undefined);
   const [celcius, setCelcius] = useState(true);
+
+  //url to get searched weather
+  const searchUrlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${weather}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+  const searchUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${forecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+
+  const handleChange = (e) => {
+    setWeather(e.target.value.toLowerCase());
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getWeather();
+  };
+
+ const getWeather = async () => {
+  const responses = await Promise.all([
+    fetch(searchUrlWeather),
+    fetch(searchUrlForecast),
+  ])
+
+    .then((res) => Promise.all(res.map((r) => r.json())))
+    .then((result) => {
+      console.log(result);
+      setWeather(result[0]);
+      console.log(result[0]);
+      setForecast(result[1].list);
+      console.log(result[1]);
+    });
+ }
 
   //Menu for showing one day forecast hour-by-hour
   const [menu, setMenu] = useState(false);
@@ -103,6 +114,20 @@ function App() {
       <Nav />
 
       <div className="App">
+      <div className="searchBar">
+          <form onSubmit={handleSubmit} className="form-inline">
+            <input
+              className="input"
+              onChange={handleChange}
+              type="search"
+              placeholder="Search city"
+              aria-label="Search"
+            />
+            <button className="btn-grad" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
         <div className="container text-center">
           <div className="dailyholder row justify-content-md-center">
             <div
@@ -233,7 +258,7 @@ function App() {
               id="grid"
               className="cont  col col-sm-10 shadow-lg p-3 mb-5 bg-body-tertiary rounded"
             >
-              5-day-prognosis
+             <h2>5-day forecast</h2>
               {forecast && (
                 <div className="d-flex justify-content-center p-2">
                   {forecast

@@ -1,8 +1,7 @@
 
 nav {
     height: 100px;
-   
-    
+
 }
 
          
@@ -28,9 +27,15 @@ nav {
 .searchBar 
 {
     display: flex;
-    margin-right: 30px;
- 
+    margin-right: 0px;
+    margin-left: 40vw;
 
+}
+
+form {
+    margin-top:30px;
+    margin-bottom: 50px;
+    margin-left
 }
 
 form .input {
@@ -40,13 +45,13 @@ form .input {
     
 }
 
-img {
-    margin-left: 15%;
-    height: 70%; 
+nav img {
+    margin-left: 30%;
+    height: 100%; 
 }
 
 h1{
-    margin-right: 40%;
+    margin-right: 45%;
     font-weight: bold;
     color: rgb(104, 151, 209);;
 }
@@ -70,7 +75,7 @@ nav {
 form {
     height: 35px;
     border-radius: 5px;
-    margin-left: 15%;
+    margin-left: -50%;
     
 }
 
@@ -81,7 +86,8 @@ img {
 }
 
 h1{
-    margin-right: 20%;
+    margin-right: 15%;
+    margin-left: 30%;
     
 }
 }
