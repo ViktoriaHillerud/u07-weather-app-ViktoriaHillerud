@@ -23,10 +23,11 @@ function App() {
 
   //url to get searched weather
   const searchUrlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${weather}&appid=38de3cc8678599c25ca4c9800d971a8b`;
-  const searchUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${searchForecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+  const searchUrlForecast = `http://api.openweathermap.org/geo/1.0/direct?q=${searchForecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
 
   const handleChange = (e) => {
     setWeather(e.target.value.toLowerCase());
+    setSearchForecast(e.target.value.toLowerCase());
   };
 
   const handleSubmit = (e) => {
@@ -45,8 +46,11 @@ function App() {
         console.log(result);
         setWeather(result[0]);
         console.log(result[0]);
-        setSearchForecast(result[1].list);
-        console.log(result[1].list);
+        setLat(result[1][0].lat);
+        setLng(result[1][0].lon)
+        console.log(result[1][0].lon);
+        console.log(result[1][0].lat);
+        
       });
   };
 
@@ -56,28 +60,31 @@ function App() {
     setMenu(!menu);
   };
 
+  useEffect(() =>   {
+    
+    if (!navigator.geolocation) {
+      setStatus("We couldnt find your position!");
+    } else {
+      setStatus("");
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+        console.log(position);
+      },
+      () => {
+        setStatus(
+          "Unable to retrieve position. Try search for your city instead!"
+        );
+      }
+    );
+  }, [])
+
   useEffect(() => {
     const getLocation = async () => {
       const urlWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
       const urlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=38de3cc8678599c25ca4c9800d971a8b`;
-
-      if (!navigator.geolocation) {
-        setStatus("We couldnt find your position!");
-      } else {
-        setStatus("");
-      }
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
-          console.log(position);
-        },
-        () => {
-          setStatus(
-            "Unable to retrieve position. Try search for your city instead!"
-          );
-        }
-      );
 
       const responses = await Promise.all([
         fetch(urlWeather),
@@ -126,7 +133,7 @@ function App() {
               id="grid"
               className="cont col col-md-6 shadow p-3 mb-5 bg-body-tertiary rounded"
             >
-              {status}
+              {searchForecast === undefined && status}
               {typeof weather.main != "undefined" ? (
                 <div>
                   <h2>{weather.name}</h2>
