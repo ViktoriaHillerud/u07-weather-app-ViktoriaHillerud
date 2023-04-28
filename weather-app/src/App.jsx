@@ -151,7 +151,7 @@ function App() {
                   {celcius && (
                     <p className="degrees">
                       <img
-                        src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
+                        src={`https://openweathermap.org/img/w/${weather.weather[0].icon}.png`}
                       />
                       {Math.round(weather.main.temp - 273.15)} &#176;C
                     </p>
