@@ -23,7 +23,7 @@ function App() {
 
   //url to get searched weather
   const searchUrlWeather = `https://api.openweathermap.org/data/2.5/weather?q=${weather}&appid=38de3cc8678599c25ca4c9800d971a8b`;
-  const searchUrlForecast = `http://api.openweathermap.org/geo/1.0/direct?q=${searchForecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
+  const searchUrlForecast = `https://api.openweathermap.org/geo/1.0/direct?q=${searchForecast}&appid=38de3cc8678599c25ca4c9800d971a8b`;
 
   const handleChange = (e) => {
     setWeather(e.target.value.toLowerCase());
@@ -108,10 +108,8 @@ function App() {
   };
 
   return (
-    //handleSubmit={handleSubmit} handleChange={handleChange} on Nav-component?
     <>
       <Nav />
-
       <div className="App">
         <div className="searchBar">
           <form onSubmit={handleSubmit} className="form-inline">
